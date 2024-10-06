@@ -1,3 +1,5 @@
+# yatube_api/api/serializers.py
+
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 

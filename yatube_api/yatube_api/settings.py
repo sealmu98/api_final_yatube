@@ -1,3 +1,5 @@
+# yatube_api/yatube_api/settings.py
+
 from pathlib import Path
 
 from datetime import timedelta

@@ -1,1 +1,1 @@
-# TODO:  Напишите свой вариант
+# yatube_api/api/views.py
