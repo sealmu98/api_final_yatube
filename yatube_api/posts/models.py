@@ -1,5 +1,3 @@
-# yatube_api/posts/models.py
-
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -8,52 +6,9 @@ from posts.constants import MAX_TEXT_LENGTH, MAX_TITLE_LENGTH
 User = get_user_model()
 
 
-class Follow(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='Кто подписан',
-        related_name='follower'
-    )
-    following = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='На кого подписан',
-        related_name='following'
-    )
-
-    class Meta:
-        verbose_name = 'подписка'
-        verbose_name_plural = 'Подписки'
-
-    def __str__(self):
-        return f'Подписка {self.user} на {self.following}'
-
-
-class Group(models.Model):
-    title = models.CharField(
-        max_length=MAX_TITLE_LENGTH,
-        verbose_name='Заголовок'
-    )
-    slug = models.SlugField(
-        unique=True,
-        verbose_name='Индификатор'
-    )
-    description = models.TextField(
-        verbose_name='Описание'
-    )
-
-    class Meta:
-        verbose_name = 'группа'
-        verbose_name_plural = 'Группы'
-
-    def __str__(self):
-        return self.title[:MAX_TEXT_LENGTH]
-
-
 class Post(models.Model):
     text = models.TextField(
-        verbose_name='Текст'
+        verbose_name='Текст публикации'
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
@@ -66,12 +21,11 @@ class Post(models.Model):
     )
     image = models.ImageField(
         upload_to='posts/',
-        null=True,
         blank=True,
         verbose_name='Картинка'
     )
     group = models.ForeignKey(
-        Group,
+        'Group',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -99,7 +53,7 @@ class Comment(models.Model):
         verbose_name='Публикация'
     )
     text = models.TextField(
-        verbose_name='Текст'
+        verbose_name='Текст коментария'
     )
     created = models.DateTimeField(
         auto_now_add=True,
@@ -117,3 +71,51 @@ class Comment(models.Model):
             f'Комментарий к посту {self.post} от {self.author}: '
             f'{self.text[:MAX_TEXT_LENGTH]}'
         )
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='follower'
+    )
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор',
+        related_name='following'
+    )
+
+    class Meta:
+        # уточнить что это и зачем
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'following'],
+                                    name='unique_followers')
+        ]
+        verbose_name = 'подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return f'Подписка {self.user} на {self.following}'
+
+
+class Group(models.Model):
+    title = models.CharField(
+        max_length=MAX_TITLE_LENGTH,
+        verbose_name='Название группы'
+    )
+    slug = models.SlugField(
+        unique=True,
+        verbose_name='Индификатор'
+    )
+    description = models.TextField(
+        verbose_name='Описание группы'
+    )
+
+    class Meta:
+        verbose_name = 'группа'
+        verbose_name_plural = 'Группы'
+
+    def __str__(self):
+        return self.title[:MAX_TEXT_LENGTH]
