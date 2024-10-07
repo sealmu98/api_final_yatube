@@ -8,6 +8,28 @@ from posts.constants import MAX_TEXT_LENGTH, MAX_TITLE_LENGTH
 User = get_user_model()
 
 
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Кто подписан',
+        related_name='follower'
+    )
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='На кого подписан',
+        related_name='following'
+    )
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return f'Подписка {self.user} на {self.following}'
+
+
 class Group(models.Model):
     title = models.CharField(
         max_length=MAX_TITLE_LENGTH,
