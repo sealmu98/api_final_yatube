@@ -2,28 +2,26 @@
 **RU**
 ## Описание
 
-Yatube - это блог для публикации постов и комментариев, нацеленный по концепции на обсуждение фильмов. Проект состоит из бекенда на Django и фронтенда на React.
+Yatube - это социальная сеть, в которой пользователи могут создавать посты, комментировать их, подписываться на других пользователей и создавать группы. Этот проект представляет собой RESTful API, который позволяет взаимодействовать с социальной сетью через HTTP-запросы.
 
-**API для проекта Yatube - это решение готовое к взаимодействию с фронтендом блога Yatube, где у пользователей есть следующие возможности:**
-* регистрация
-* публикация постов
-* публикация комментариев
-* подписка на публикации прочих пользователей сервиса
+## Что было сделано
 
-В данном проекте моей главной задачей было написать API бекенда сервиса для осуществления взаимодействия с фронтендом на React.
-Бекенд был мною разработан на Django REST Framework.
-Тистирование API в ходе разработки я проводил в Postman.
-Также в проекте я настраивал CI/CD - составлял Dockerfile, конфигурацию файлов Nginx локального и на сервере с Ubuntu (поскольку на сервере развернуто несколько проектов в контейнерах), также настраивал автоматический деплой на сервер с помощью GitHub workflows.
+**В этом проекте я реализовал следующий функционал:
+
+*Разработал RESTful API для социальной сети Yatube с использованием Django и Django REST framework.
+*Создал модели для постов, комментариев, групп и подписок.
+*Реализовал вьюсеты для обработки запросов к API.
+*Настроил аутентификацию и авторизацию с использованием JWT-токенов.
+*Добавил пермишены для ограничения доступа к API для неаутентифицированных пользователей.
+*Развернул проект на локальной машине с использованием виртуального окружения и SQLite базы данных.
 
 
 ## Стек технологий проекта
 ![Python](https://img.shields.io/badge/-Python-black?style=for-the-badge&logo=python)
 ![Django](https://img.shields.io/badge/-Django-black?style=for-the-badge&logo=Django)
 ![DRF](https://img.shields.io/badge/-Django_REST_Framework-black?style=for-the-badge&logo=DRF)
-![PostgresQL](https://img.shields.io/badge/-PostgresQL-black?style=for-the-badge&logo=PostgresQL)
 ![SQLite](https://img.shields.io/badge/-SQLite-black?style=for-the-badge&logo=SQLite)
-![Docker](https://img.shields.io/badge/-Docker-black?style=for-the-badge&logo=Docker)
-![Nginx](https://img.shields.io/badge/-Nginx-black?style=for-the-badge&logo=Nginx)
+![JWT](https://img.shields.io/badge/-JWT-black?style=for-the-badge&logo=JWT)
 ![Linux](https://img.shields.io/badge/-Linux-black?style=for-the-badge&logo=Linux)
 ![Postman](https://img.shields.io/badge/-Postman-black?style=for-the-badge&logo=postman)
 
