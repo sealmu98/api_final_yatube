@@ -18,6 +18,9 @@ class Post(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор'
+        # ЗАМЕЧАНИЕ:
+        # Для автора можно указать имя для обращения к связанным постам -
+        # related_name (например, posts)
     )
     image = models.ImageField(
         upload_to='posts/',
@@ -35,7 +38,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        default_related_name = 'posts'
+        default_related_name = 'posts'  # у меня указан дефолтный related_name
 
     def __str__(self):
         return self.text[:MAX_TEXT_LENGTH]
@@ -88,7 +91,6 @@ class Follow(models.Model):
     )
 
     class Meta:
-        # уточнить что это и зачем
         constraints = [
             models.UniqueConstraint(fields=['user', 'following'],
                                     name='unique_followers')
@@ -118,4 +120,4 @@ class Group(models.Model):
         verbose_name_plural = 'Группы'
 
     def __str__(self):
-        return self.title[:MAX_TEXT_LENGTH]
+        return self.title
