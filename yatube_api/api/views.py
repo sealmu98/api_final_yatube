@@ -1,11 +1,10 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import (AllowAny, IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from posts.models import Follow, Group, Post
+from posts.models import Comment, Follow, Group, Post
 
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
@@ -13,7 +12,7 @@ from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author').all()
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly)
     authentication_classes = (JWTAuthentication,)
@@ -29,12 +28,15 @@ class CommentViewSet(viewsets.ModelViewSet):
     authentication_classes = (JWTAuthentication,)
 
     def get_queryset(self):
-        post = get_object_or_404(Post, id=self.kwargs['post_id'])
-        return post.comments.all()
+        return Comment.objects.filter(
+            post_id=self.kwargs['post_id']
+        ).select_related('author', 'post')
 
     def perform_create(self, serializer):
-        post = get_object_or_404(Post, id=self.kwargs['post_id'])
-        serializer.save(author=self.request.user, post=post)
+        serializer.save(
+            author=self.request.user,
+            post_id=self.kwargs['post_id']
+        )
 
 
 class FollowViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,

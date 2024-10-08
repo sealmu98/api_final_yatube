@@ -1,11 +1,13 @@
 from django.contrib import admin
-from .models import Post, Comment, Follow, Group
+
+from .models import Comment, Follow, Group, Post
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('text', 'pub_date', 'author', 'group')
     search_fields = ('text', 'author__username')
+    list_filter = ('pub_date',)
 
 
 @admin.register(Comment)
