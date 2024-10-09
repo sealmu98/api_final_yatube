@@ -17,10 +17,8 @@ class Post(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='posts',
         verbose_name='Автор'
-        # ЗАМЕЧАНИЕ:
-        # Для автора можно указать имя для обращения к связанным постам -
-        # related_name (например, posts)
     )
     image = models.ImageField(
         upload_to='posts/',
@@ -32,13 +30,14 @@ class Post(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name='posts',
         verbose_name='Группа'
     )
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        default_related_name = 'posts'  # у меня указан дефолтный related_name
+        default_related_name = 'posts'
 
     def __str__(self):
         return self.text[:MAX_TEXT_LENGTH]
@@ -48,11 +47,13 @@ class Comment(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='comments',
         verbose_name='Автор'
     )
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
+        related_name='comments',
         verbose_name='Публикация'
     )
     text = models.TextField(
